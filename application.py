@@ -25,7 +25,7 @@ def index():
 
 
 @app.route('/categoryJSON')
-@app.route('/catagoryjson')
+@app.route('/categoryjson')
 def categoryJSON():
     categories = session.query(Category).all()
     return jsonify(categories = [c.serialize for c in categories])
