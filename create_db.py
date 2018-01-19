@@ -37,6 +37,12 @@ category1 = Category(name="Snowboard",
 session.add(category1)
 session.commit()
 
+category2 = Category(name="Skiing",
+                     user_id="1",
+                     description="Skiing is a recreational activity...")
+session.add(category2)
+session.commit()
+
 
 # Create initial item
 item1 = Item(name="Flow Merc",
@@ -45,5 +51,19 @@ item1 = Item(name="Flow Merc",
              description="Beginner to Intermediate snowboard.")
 session.add(item1)
 session.commit()
-print "Created category and item"
+
+item2 = Item(name="Flow Aero Coiler Boa",
+             category_id="1",
+             user_id="1",
+             description="Snowboard Boots, 2017")
+session.add(item2)
+session.commit()
+
+item3 = Item(name="Flow Five Hybrid Snowboard Bindings",
+             category_id="1",
+             user_id="1",
+             description="Snowboard Bindings")
+session.add(item3)
+session.commit()
+print "Created category and items"
 
