@@ -7,6 +7,11 @@ This is the Catalog project. This project uses a variety of technologies learned
 Currently WIP
 This will be updated once complete.
 
+#### Files Needed
+This app uses the Google OAuth2 API to facilitate creating login credentials.
+You will need to create OAuth keys from Google. Once created, download Client ID for Web Application
+as a JSON file and save it as: `/catalog/client_secrets.json`.
+
 ### Languages / Frameworks / Libraries / APIs
 - Bootstrap
 - CSS3
