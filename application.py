@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from flask import Flask, url_for, render_template
 from flask import jsonify
 

@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 This file is used to initialize a database for this project.
 """
