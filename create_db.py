@@ -25,6 +25,7 @@ session = DBSession()
 
 # Create 'master' user.
 user1 = User(username="master")
+user1.hash_password("12345")
 session.add(user1)
 session.commit()
 print "Created user: 'master', password: '12345'"
