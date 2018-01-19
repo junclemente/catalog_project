@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from flask import Flask, url_for, render_template
+from flask import Flask, url_for, render_template, request
 from flask import jsonify
 
 from sqlalchemy import create_engine
@@ -22,6 +22,17 @@ session = DBSession()
 def index():
     # return "<h1>Hello World!</h1>"
     return render_template('index.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        print username, password
+
+    return render_template('login.html')
+
 
 
 @app.route('/categoryJSON')
