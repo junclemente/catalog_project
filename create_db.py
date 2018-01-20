@@ -2,12 +2,13 @@
 """
 This file is used to initialize a database for this project.
 """
+from app import app
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 
-from models import User, Category, Item, Base
+from app.models import User, Category, Item, Base
 
 
 engine = create_engine('sqlite:///catalogProject.db')
