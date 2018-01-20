@@ -8,6 +8,7 @@ from models import User, Base
 
 from flask_httpauth import HTTPBasicAuth
 
+secret_key = "this is a secret key"
 
 engine = create_engine('sqlite:///catalogProject.db')
 Base.metadata.bind = engine
@@ -15,7 +16,6 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 auth = HTTPBasicAuth()
-secret_key = 'secret_key'
 
 @auth.verify_password
 def verify_password(username_or_token, password):
