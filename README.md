@@ -23,3 +23,4 @@ as a JSON file and save it as: `/catalog/client_secrets.json`.
 
 ### Resources
 - Bootstrap v4 [getBoostrap.com](http://getbootstrap.com "getBootstrap.com")
+- Favicon & App Icon Generator - Dan's Tools [www.favicon-generator.com](https://www.favicon-generator.org "favicon-generator.org")
