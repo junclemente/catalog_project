@@ -2,5 +2,15 @@
 {% block title %}Welcome!{% endblock %}
 
 {% block content %}
-    <h1>Hello World!</h1>
+    <h1>FSND Sports Catalog</h1>
+        <ul>
+            {% for c in category %}
+            <li>{{ c.name }}</li>
+            {% endfor %}
+        </ul>
+        <ul>
+            {% for i in items %}
+            <li>{{ i.id }}: {{ i.name }}</li>
+            {% endfor %}
+        </ul>
 {% endblock %}
