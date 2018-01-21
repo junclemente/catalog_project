@@ -5,6 +5,7 @@ click==6.7
 Flask==0.12.2
 Flask-HTTPAuth==3.2.3
 Flask-SQLAlchemy==2.3.2
+Flask-WTF==0.14.2
 html5lib==1.0.1
 httplib2==0.10.3
 idna==2.6
@@ -26,3 +27,4 @@ SQLAlchemy==1.2.1
 urllib3==1.22
 webencodings==0.5.1
 Werkzeug==0.14.1
+WTForms==2.1
