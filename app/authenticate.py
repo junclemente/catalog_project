@@ -1,6 +1,7 @@
 from app import app
 
-from flask import request, render_template, flash
+from flask import request, render_template, flash, redirect, url_for, g
+from flask import session as login_session
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -44,6 +45,8 @@ def login():
             if user.verify_password(password):
                 token = user.generate_auth_token(600)
                 flash('Login successful.')
+                login_session['username'] = user.username
+                token = user.generate_auth_token
             return redirect(url_for('index'))
     return render_template('login.html', error=error)
 
@@ -53,3 +56,10 @@ def login():
 def get_auth_token():
     token = g.user.generate_auth_token
     return jsonify({'token': token.decode('ascii')})
+
+
+@app.route('/logout')
+def logout():
+    del login_session['username']
+    flash("You have successfully been logged out.")
+    return redirect(url_for('index'))
