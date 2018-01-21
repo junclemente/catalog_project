@@ -27,3 +27,9 @@ def category_list(cat_id):
     items = session.query(Item).filter_by(category_id=cat_id).all()
     return render_template('category_list.html', category=category,
                            items=items)
+
+
+@app.route('/item/<int:item_id>')
+def item(item_id):
+    item = session.query(Item).filter_by(id=item_id).first()
+    return render_template('item.html', item=item)

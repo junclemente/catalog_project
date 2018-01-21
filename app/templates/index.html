@@ -10,7 +10,7 @@
         </ul>
         <ul>
             {% for i in items %}
-            <li>{{ i.id }}: {{ i.name }}</li>
+            <li><a href="{{ url_for('item', item_id= i.id) }}">{{ i.name }}</a></li>
             {% endfor %}
         </ul>
 {% endblock %}
