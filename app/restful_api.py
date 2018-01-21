@@ -20,6 +20,12 @@ def categoryJSON():
     return jsonify(categories = [c.serialize for c in categories])
 
 
+@app.route('/allItemsJSON')
+def allItemsJSON():
+    items = session.query(Item).all()
+    return jsonify(items = [i.serialize for i in items])
+
+
 @app.route('/itemJSON/<int:id>')
 @app.route('/itemjson/<int:id>')
 def itemJSON(id):

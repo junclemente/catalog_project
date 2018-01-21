@@ -17,10 +17,12 @@
 
 <body>
     <header>
-        <nav></nav>
+        <nav>
+            {% include "navbar.html" %}
+        </nav>
     </header>
     {% include "error_flash.html" %}
-    <div id="content">
+    <div class="container" id="content">
         {% block content %}{% endblock %}
     </div>
     {# The following links are required for Bootstrap #}
