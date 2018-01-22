@@ -17,10 +17,7 @@ class CategoryForm(FlaskForm):
 
 class ItemForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
-    maker = StringField('Make', validators=[DataRequired()])
-    model_year = StringField('Year')
     description = TextAreaField('Description')
-    price = StringField('Price')
     submit = SubmitField('Add')
 
 
