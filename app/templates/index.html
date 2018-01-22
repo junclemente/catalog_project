@@ -3,12 +3,14 @@
 
 {% block content %}
     <h1>FSND Sports Catalog</h1>
+        <h2>Categories</h2>
         <ul>
             {% for c in category %}
             <li><a href="{{ url_for('category_list', cat_id=c.id) }}">{{ c.name }}</a></li>
             {% endfor %}
         </ul>
         <a href="{{ url_for('add_category') }}">Add new category</a>
+        <h2>Newest Items</h2>
         <ul>
             {% for i in items %}
             <li><a href="{{ url_for('item', item_id= i.id) }}">{{ i.name }}</a></li>
