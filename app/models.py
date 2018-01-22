@@ -65,11 +65,11 @@ class Item(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(120), nullable=False) # model name
-    maker = Column(String(80), nullable=False)
-    model_year = Column(String(10))
+    # maker = Column(String(80), nullable=False)
+    # model_year = Column(String(10))
     description = Column(String(250))
-    price = Column(String(10))
-    category_id = Column(Integer, ForeignKey('category.id'))
+    # price = Column(String(10))
+    category_id = Column(Integer, ForeignKey('category.id'), nullable=False)
     category = relationship(Category)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
