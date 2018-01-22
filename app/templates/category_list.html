@@ -4,6 +4,9 @@
 {% block content %}
 <h1>{{ category.name }}</h1>
     <p>{{ category.description }}</p>
+    <p>Edit</p>
+    <p><a href="{{ url_for('delete_category', cat_id=category.id) }}"">Delete</p>
+    <p><a href="{{ url_for('add_item', cat_id=category.id) }}">Add New Item</a></p>
     <ul>
         {% for item in items %}
         <li><a href="#">{{ item.name }}</a></li>
