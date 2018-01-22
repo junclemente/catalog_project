@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Add Category{% endblock %}
+
+{% block content %}
+<h1>New Category</h1>
+    <form action="{{ url_for('add_category') }}" method="post">
+        {{ form.csrf_token }}
+        {{ form.name.label }}<br>
+        {{ form.name(size=30) }}<br>
+        {{ form.description.label }}<br>
+        {{ form.description(size=100) }}<br>
+        {{ form.submit }}<br>
+    </form>
+
+{% endblock %}

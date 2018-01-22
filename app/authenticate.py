@@ -3,13 +3,15 @@ from app import app
 from flask import request, render_template, flash, redirect, url_for, g
 from flask import session as login_session
 
+from forms import LoginForm
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import User, Base
 
 from flask_httpauth import HTTPBasicAuth
 
-secret_key = "this is a secret key"
+# secret_key = "this is a secret key"
 
 engine = create_engine('sqlite:///catalogProject.db')
 Base.metadata.bind = engine
@@ -34,21 +36,23 @@ def verify_password(username_or_token, password):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+    form = LoginForm()
+    if form.validate_on_submit():
+        username = form.name.data
+        password = form.password.data
         user = session.query(User).filter_by(username=username).first()
         if not user:
             flash('Login unsuccessful.')
-            error = "No username available"
-        elif user:
+            error = "No username available."
+        else:
             if user.verify_password(password):
                 token = user.generate_auth_token(600)
-                flash('Login successful.')
                 login_session['username'] = user.username
-                token = user.generate_auth_token
-            return redirect(url_for('index'))
-    return render_template('login.html', error=error)
+                flash('Login successful.')
+                return redirect(url_for('index'))
+            else:
+                flash('Login unsuccessful.')
+    return render_template('login.html', error=error, form=form)
 
 
 @app.route('/token')

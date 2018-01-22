@@ -64,7 +64,9 @@ class Item(Base):
     __tablename__ = 'item'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(80), nullable=False)
+    name = Column(String(120), nullable=False) # model name
+    maker = Column(String(80), nullable=False)
+    model_year = Column(String(10))
     description = Column(String(250))
     price = Column(String(10))
     category_id = Column(Integer, ForeignKey('category.id'))
@@ -76,6 +78,8 @@ class Item(Base):
     def serialize(self):
         itemJSON = {'id': self.id,
                     'name': self.name,
+                    'maker': self.maker,
+                    'year': self.model_year,
                     'description': self.description,
                     'category_id': self.category_id
                     }

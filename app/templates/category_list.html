@@ -3,6 +3,7 @@
 
 {% block content %}
 <h1>{{ category.name }}</h1>
+    <p>{{ category.description }}</p>
     <ul>
         {% for item in items %}
         <li><a href="#">{{ item.name }}</a></li>

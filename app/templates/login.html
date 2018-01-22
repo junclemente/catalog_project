@@ -5,11 +5,18 @@
     <h1>Login</h1>
 
     <form action="{{ url_for('login') }}" method="post">
-        Username:<br>
+<!--         Username:<br>
         <input type="text" name="username"><br>
         Password:<br>
         <input type="password" name="password"><br>
         <input type="submit" value="Login">
+ -->
+        {{ form.csrf_token }}
+        {{ form.name.label }}<br>
+        {{ form.name(size=20) }}<br>
+        {{ form.password.label }}<br>
+        {{ form.password(size=20) }}<br>
+        {{ form.submit }}<br>
     </form>
 
 {% endblock %}
