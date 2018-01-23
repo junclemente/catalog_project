@@ -48,8 +48,6 @@ session.commit()
 
 # Create initial item
 item1 = Item(name="Merc",
-             maker="Flow",
-             model_year="2017",
              category_id="1",
              user_id="1",
              description="Beginner to Intermediate snowboard.")
@@ -57,8 +55,6 @@ session.add(item1)
 session.commit()
 
 item2 = Item(name="Aero Coiler Boa",
-             maker="Flow",
-             model_year="2018",
              category_id="1",
              user_id="1",
              description="Snowboard Boots, 2017")
@@ -66,8 +62,6 @@ session.add(item2)
 session.commit()
 
 item3 = Item(name="Five Hybrid Snowboard Bindings",
-             maker="Flow",
-             model_year="2018",
              category_id="1",
              user_id="1",
              description="Snowboard Bindings")
