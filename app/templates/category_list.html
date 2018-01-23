@@ -4,12 +4,18 @@
 {% block content %}
 <h1>{{ category.name }}</h1>
     <p>{{ category.description }}</p>
-    <p>Edit</p>
-    <p><a href="{{ url_for('delete_category', cat_id=category.id) }}"">Delete</p>
+    <p><a href="{{ url_for('edit_category', cat_id=category.id) }}">Edit Category</a></p>
+    <p><a href="{{ url_for('delete_category', cat_id=category.id) }}">Delete Category</a></p>
+
+    {% if items %}
+        <h2>Items</h2>
+        <ul>
+            {% for item in items %}
+            <li><a href="{{ url_for('item', item_id=item.id) }}">{{ item.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>There are no items in this category.</p>
+    {% endif %}
     <p><a href="{{ url_for('add_item', cat_id=category.id) }}">Add New Item</a></p>
-    <ul>
-        {% for item in items %}
-        <li><a href="#">{{ item.name }}</a></li>
-        {% endfor %}
-    </ul>
 {% endblock %}

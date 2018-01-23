@@ -5,4 +5,8 @@
 <h1>{{ item.name }}</h1>
     <h2>Description</h2>
     <p>{{ item.description }}</p>
+    <p>Category: {{ item.category.name }}</p>
+
+    <a href="#">Edit</a>
+    <a href="{{ url_for('delete_item', item_id=item.id) }}">Delete</a>
 {% endblock %}

@@ -14,6 +14,18 @@ class CategoryForm(FlaskForm):
     description = TextAreaField('Description')
     submit = SubmitField('Add Category')
 
+# class CategoryForm(FlaskForm):
+#     name = StringField('Name', validators=[DataRequired()])
+#     description = TextAreaField('Description')
+
+
+class CategoryAddForm(CategoryForm):
+    submit = SubmitField('Add Category')
+
+
+class CategoryEditForm(CategoryForm):
+    submit = SubmitField('Edit Category')
+
 
 class ItemForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
