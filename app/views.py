@@ -2,7 +2,8 @@ from app import app
 
 from flask import render_template, flash, redirect, url_for, request
 
-from forms import CategoryAddForm, CategoryEditForm, ConfirmForm, ItemForm
+from forms import CategoryForm, CategoryEditForm, ConfirmForm
+from forms import ItemForm, ItemEditForm
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -33,7 +34,7 @@ def category_list(cat_id):
 
 @app.route('/addCategory', methods=['GET', 'POST'])
 def add_category():
-    form = CategoryAddForm()
+    form = CategoryForm()
     if form.validate_on_submit():
         name = form.name.data
         description = form.description.data
@@ -72,6 +73,7 @@ def edit_category(cat_id):
     if form.validate_on_submit():
         category.name = form.name.data
         category.description = form.description.data
+
         flash('Category has been edited successfully.')
         return render_template('category_list.html', category=category)
     if request.method == 'GET':
@@ -88,6 +90,7 @@ def item(item_id):
 
 @app.route('/add_item/<int:cat_id>', methods=['GET', 'POST'])
 def add_item(cat_id):
+    # form = ItemAddForm()
     form = ItemForm()
     category = session.query(Category).filter_by(id=cat_id).first()
     if form.validate_on_submit():
@@ -99,6 +102,39 @@ def add_item(cat_id):
         flash('Item added successfully.')
         return redirect(url_for('category_list', cat_id=category.id))
     return render_template('add_item.html', category=category, form=form)
+
+
+@app.route('/edit_item/<int:item_id>', methods=['GET', 'POST'])
+def edit_item(item_id):
+    """
+    Edit Item
+    The choices for the dropdown selectfield is dynamically populated by
+    querying the Category table.
+    The default value of the selectfield is also dynamically set.
+    form.process() is run to process the choices and default value
+    The form is provided with the default values after the selectfield has
+    been processed.
+    """
+    form = ItemEditForm()
+    item = session.query(Item).filter_by(id=item_id).one()
+    category = session.query(Category).all()
+    select_field = [ (c.id, c.name) for c in category]
+    if request.method == 'POST':
+        item.name = form.name.data
+        item.description = form.description.data
+        item.category_id = form.category_id.data
+        session.commit()
+        flash('Item edited successfully.')
+        return redirect(url_for('item', item_id=item.id))
+    if request.method == 'GET':
+        form.category_id.choices = select_field
+        form.category_id.default = item.category_id
+        form.process()
+        form.name.data = item.name
+        form.description.data = item.description
+    return render_template('edit_item.html', category=category,item=item,
+                           form=form)
+
 
 
 @app.route('/delete_item/<int:item_id>', methods=['GET', 'POST'])

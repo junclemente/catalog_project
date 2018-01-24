@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField
+from wtforms import SelectField
 from wtforms.validators import DataRequired
 
 
@@ -19,8 +20,7 @@ class CategoryForm(FlaskForm):
 #     description = TextAreaField('Description')
 
 
-class CategoryAddForm(CategoryForm):
-    submit = SubmitField('Add Category')
+# class CategoryAddForm(CategoryForm):
 
 
 class CategoryEditForm(CategoryForm):
@@ -31,6 +31,14 @@ class ItemForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     description = TextAreaField('Description')
     submit = SubmitField('Add')
+
+
+# class ItemAddForm(ItemForm):
+
+
+class ItemEditForm(ItemForm):
+    category_id = SelectField('Category')
+    submit = SubmitField('Edit')
 
 
 class ConfirmForm(FlaskForm):
