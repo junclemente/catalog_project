@@ -73,9 +73,8 @@ def edit_category(cat_id):
     if form.validate_on_submit():
         category.name = form.name.data
         category.description = form.description.data
-
         flash('Category has been edited successfully.')
-        return render_template('category_list.html', category=category)
+        return redirect(url_for('category_list', cat_id=category.id))
     if request.method == 'GET':
         form.name.data = category.name
         form.description.data = category.description
