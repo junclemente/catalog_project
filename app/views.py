@@ -32,7 +32,7 @@ def category_list(cat_id):
                            items=items)
 
 
-@app.route('/addCategory', methods=['GET', 'POST'])
+@app.route('/add_category', methods=['GET', 'POST'])
 def add_category():
     form = CategoryForm()
     if form.validate_on_submit():
@@ -43,7 +43,7 @@ def add_category():
         session.add(new_category)
         session.commit()
         flash('New Category Added')
-        return redirect(url_for('index'))
+        return redirect(url_for('category_list', cat_id=new_category.id))
     return render_template('add_category.html', form=form)
 
 
