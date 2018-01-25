@@ -6,9 +6,9 @@
     <form action="{{ url_for('edit_category', cat_id=category.id) }}" method="post">
         {{ form.csrf_token }}
         {{ form.name.label }}<br>
-        {{ form.name(size=30) }}<br>
+        {{ form.name(width=30) }}<br>
         {{ form.description.label }}<br>
-        {{ form.description(size=100) }}<br>
+        {{ form.description(width=100) }}<br>
         {{ form.submit }}<br>
     </form>
 
