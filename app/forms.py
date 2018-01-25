@@ -15,30 +15,20 @@ class CategoryForm(FlaskForm):
     description = TextAreaField('Description')
     submit = SubmitField('Add Category')
 
-# class CategoryForm(FlaskForm):
-#     name = StringField('Name', validators=[DataRequired()])
-#     description = TextAreaField('Description')
-
-
-# class CategoryAddForm(CategoryForm):
-
 
 class CategoryEditForm(CategoryForm):
-    submit = SubmitField('Edit Category')
+    submit = SubmitField('Update Category Information')
 
 
 class ItemForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     description = TextAreaField('Description')
-    submit = SubmitField('Add')
-
-
-# class ItemAddForm(ItemForm):
+    submit = SubmitField('Add Item')
 
 
 class ItemEditForm(ItemForm):
     category_id = SelectField('Category')
-    submit = SubmitField('Edit')
+    submit = SubmitField('Update Item Information')
 
 
 class ConfirmForm(FlaskForm):
