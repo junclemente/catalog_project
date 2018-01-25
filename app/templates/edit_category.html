@@ -8,8 +8,10 @@
         {{ form.name.label }}<br>
         {{ form.name(width=30) }}<br>
         {{ form.description.label }}<br>
-        {{ form.description(width=100) }}<br>
+        {{ form.description }}<br>
         {{ form.submit }}<br>
     </form>
+
+    <a href="{{ url_for('category_list', cat_id=category.id) }}">Cancel/Return to {{category.name}}</a>
 
 {% endblock %}
