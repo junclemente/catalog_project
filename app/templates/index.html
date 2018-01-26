@@ -5,7 +5,7 @@
 <div class="container">
     <h1>FSND Catalog</h1>
     <div class="row">
-        <div class="col-4">
+        <div class="col-sm-3">
             <h2>Categories</h2>
             <ul>
                 {% for c in category %}
@@ -14,7 +14,7 @@
             </ul>
             <a href="{{ url_for('add_category') }}">Add new category</a>
         </div>
-        <div class="col-8">
+        <div class="col-sm-9">
             <h2>Newest Items</h2>
             <ul>
                 {% for i in items %}
@@ -22,6 +22,6 @@
                 {% endfor %}
             </ul>
         </div>
-    </div>
+    </div><!-- /.row -->
 </div>
 {% endblock %}
