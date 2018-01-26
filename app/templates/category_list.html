@@ -2,16 +2,23 @@
 {% block title %}{{ category.name }}{% endblock %}
 
 {% block content %}
-<h1>{{ category.name }}</h1>
-    <p>{{ category.description }}</p>
-    <p>
-        <a href="{{ url_for('index') }}">Home</a> |
+<h2>{{ category.name }} - {{ items | length }}
+        {% if items|length == 1 %}
+            Item
+        {% else %}
+            Items
+        {% endif %}
+</h2>
+
+    <p>Category:
         <a href="{{ url_for('edit_category', cat_id=category.id) }}">Edit</a> |
         <a href="{{ url_for('delete_category', cat_id=category.id) }}">Delete</a>
     </p>
+    <!-- <p>{{ category.description }}</p> -->
 
+    <h3>Items:</h3>
+    <p><a href="{{ url_for('add_item', cat_id=category.id) }}">Add Item</a></p>
     {% if items %}
-        <h2>Items</h2>
         <ul>
             {% for item in items %}
             <li><a href="{{ url_for('item', item_id=item.id) }}">{{ item.name }}</a></li>
@@ -20,5 +27,4 @@
     {% else %}
         <p>There are no items in this category.</p>
     {% endif %}
-    <p><a href="{{ url_for('add_item', cat_id=category.id) }}">Add Item</a></p>
 {% endblock %}

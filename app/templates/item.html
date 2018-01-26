@@ -2,10 +2,9 @@
 {% block title %}{{ item.name }}{% endblock %}
 
 {% block content %}
-<h1>{{ item.name }}</h1>
-    <h2>Category: {{ item.category.name }}</h2>
-    <h3>Description</h3>
-    <p>{{ item.description }}</p>
+<h2>{{ item.name }}</h2>
+    <h3>Category: {{ item.category.name }}</h3>
+    <p>Description: {{ item.description }}</p>
 
     <p>
         <a href="{{ url_for('category_list', cat_id=item.category.id) }}">Back to {{ item.category.name }} List</a> |

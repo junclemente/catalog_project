@@ -12,12 +12,11 @@ class LoginForm(FlaskForm):
 
 class CategoryForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
-    description = TextAreaField('Description')
     submit = SubmitField('Add Category')
 
 
 class CategoryEditForm(CategoryForm):
-    submit = SubmitField('Update Category Information')
+    submit = SubmitField('Update')
 
 
 class ItemForm(FlaskForm):

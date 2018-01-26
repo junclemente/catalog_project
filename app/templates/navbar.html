@@ -9,14 +9,16 @@
             {% if 'username' not in session %}
                 <form class="navbar-form navbar-right">
                     <!-- <li class="nav-item"> -->
-                    <a class="nav-link my-sm-0 my-2" href="{{ url_for('login') }}">
-                        <button class="btn btn-outline-success" type="button">Login</button>
+                    <a href="{{ url_for('login') }}">
+                        <!-- <button class="btn btn-success" type="button">Login</button> -->
+                        Login
                     </a>
                     <!-- </li> -->
             {% else %}
                     <p>Hello, {{ session.username }}</p>
                         <a class="navlink" href="{{ url_for('logout') }}">
-                            <button class="btn btn-outline-danger" type="button">Logout</button>
+                            <!-- <button class="btn btn-outline-danger" type="button">Logout</button> -->
+                            Logout
                         </a>
                     </li>
                 </form>

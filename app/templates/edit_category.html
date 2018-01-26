@@ -5,13 +5,11 @@
 <h1>New Category</h1>
     <form action="{{ url_for('edit_category', cat_id=category.id) }}" method="post">
         {{ form.csrf_token }}
-        {{ form.name.label }}<br>
-        {{ form.name(width=30) }}<br>
-        {{ form.description.label }}<br>
-        {{ form.description }}<br>
+        <div class="form-group">
+            {{ form.name.label }}<br>
+            {{ form.name(width=30) }}<br>
+        </div>
+        <button type="button" onclick="location.href='{{ url_for('category_list', cat_id=category.id) }}'; return false">Cancel</button>
         {{ form.submit }}<br>
     </form>
-
-    <a href="{{ url_for('category_list', cat_id=category.id) }}">Cancel/Return to {{category.name}}</a>
-
 {% endblock %}

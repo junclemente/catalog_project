@@ -19,32 +19,38 @@ session = DBSession()
 @app.route('/')
 @app.route('/index')
 def index():
-    category = session.query(Category).all()
-    items = session.query(Item).order_by(Item.id.desc()).all()
-    return render_template('index.html', category=category, items=items)
+    categories = session.query(Category).all()
+    items = session.query(Item).order_by(Item.id.desc()).limit(10).all()
+    return render_template('index.html', categories=categories, items=items)
 
 
 @app.route('/category_list/<int:cat_id>')
 def category_list(cat_id):
+    categories = session.query(Category).all()
     category = session.query(Category).filter_by(id=cat_id).one()
+    print categories
+    print category
     items = session.query(Item).filter_by(category_id=cat_id).all()
-    return render_template('category_list.html', category=category,
+    return render_template('category_list.html',
+                           categories=categories,
+                           category=category,
                            items=items)
 
 
 @app.route('/add_category', methods=['GET', 'POST'])
 def add_category():
     form = CategoryForm()
+    categories = session.query(Category).all()
     if form.validate_on_submit():
         name = form.name.data
-        description = form.description.data
-        new_category = Category(name=name,
-                                description=description)
+        # description = form.description.data
+        new_category = Category(name=name)
         session.add(new_category)
         session.commit()
         flash('New Category Added')
         return redirect(url_for('category_list', cat_id=new_category.id))
-    return render_template('add_category.html', form=form)
+    return render_template('add_category.html', categories=categories,
+                           form=form)
 
 
 @app.route('/delete_category/<int:cat_id>', methods=['GET', 'POST'])
@@ -69,38 +75,45 @@ def delete_category(cat_id):
 @app.route('/edit_category/<int:cat_id>', methods=['GET', 'POST'])
 def edit_category(cat_id):
     form = CategoryEditForm()
+    categories = session.query(Category).all()
     category = session.query(Category).filter_by(id=cat_id).one()
     if form.validate_on_submit():
         category.name = form.name.data
-        category.description = form.description.data
         flash('Category has been edited successfully.')
         return redirect(url_for('category_list', cat_id=category.id))
     if request.method == 'GET':
         form.name.data = category.name
-        form.description.data = category.description
-    return render_template('edit_category.html', category=category, form=form)
+    return render_template('edit_category.html', categories=categories,
+                           category=category, form=form)
 
 
 @app.route('/item/<int:item_id>')
 def item(item_id):
+    categories = session.query(Category).all()
     item = session.query(Item).filter_by(id=item_id).first()
-    return render_template('item.html', item=item)
+    return render_template('item.html', categories=categories, item=item)
 
 
 @app.route('/add_item/<int:cat_id>', methods=['GET', 'POST'])
 def add_item(cat_id):
-    # form = ItemAddForm()
     form = ItemForm()
+    categories = session.query(Category).all()
     category = session.query(Category).filter_by(id=cat_id).first()
+    if request.method == 'post':
+        flash('POST message')
     if form.validate_on_submit():
         new_item = Item(name=form.name.data,
-                        description=form.description.data,
-                        category_id=cat_id)
+                        description=form.description.data or "No description",
+                        category_id=category.id)
+        print new_item
         session.add(new_item)
         session.commit()
         flash('Item added successfully.')
         return redirect(url_for('category_list', cat_id=category.id))
-    return render_template('add_item.html', category=category, form=form)
+    else:
+        flash("Form input error")
+    return render_template('add_item.html', categories=categories,
+                           category=category, form=form)
 
 
 @app.route('/edit_item/<int:item_id>', methods=['GET', 'POST'])

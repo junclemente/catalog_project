@@ -11,30 +11,51 @@
 
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-con">
     <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}"" type="image/x-con">
-    {# Link required for Bootstrap #}
+    {# Bootstrap CDN Links #}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    {# End Bootstrap Links #}
     {% endblock %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 
 <body>
     <header>
+            {#
         <nav>
             {% include "navbar.html" %}
         </nav>
+            #}
     </header>
-    {% include "error_flash.html" %}
-    {% block content %}{% endblock %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <span class="h2">FSND Catalog</span>
+            </div>
+            <div class="col-md-3 col-md-offset-5">
+                <span class="text-right">Login</span>
+            </div>
+        </div><!-- /.row -->
+            {% include "error_flash.html" %}
+            <div class="row">
+                <div class="col-sm-3">
+                    <h2>Categories</h2>
+                    <a href="{{ url_for('add_category') }}">Add Category</a>
+                    <ul>
+                        {% for c in categories %}
+                        <li><a href="{{ url_for('category_list', cat_id=c.id) }}">{{ c.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-sm-9">
+                    {% block content %}{% endblock %}
+                </div>
+            </div><!-- /.row -->
 
     {# The following links are required for Bootstrap #}
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
+
 </body>
 </html>
