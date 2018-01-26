@@ -13,7 +13,7 @@
         <h2>Newest Items</h2>
         <ul>
             {% for i in items %}
-            <li><a href="{{ url_for('item', item_id= i.id) }}">{{ i.name }}</a></li>
+            <li><a href="{{ url_for('item', item_id= i.id) }}">{{ i.name }} ({{ i.category.name }})</a></li>
             {% endfor %}
         </ul>
 {% endblock %}
