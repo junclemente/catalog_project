@@ -7,21 +7,25 @@
             </li>
         </ul>
             {% if 'username' not in session %}
-                <form class="navbar-form navbar-right">
+                <form class="navbar-form navbar-right" action="{{ url_for('login') }}">
+                    <input id="submit" type="submit" value="Login">
+                </form>
                     <!-- <li class="nav-item"> -->
-                    <a href="{{ url_for('login') }}">
+                    <!-- <a href="{{ url_for('login') }}"> -->
                         <!-- <button class="btn btn-success" type="button">Login</button> -->
-                        Login
-                    </a>
+                        <!-- Login -->
+                    <!-- </a> -->
                     <!-- </li> -->
             {% else %}
-                    <p>Hello, {{ session.username }}</p>
-                        <a class="navlink" href="{{ url_for('logout') }}">
-                            <!-- <button class="btn btn-outline-danger" type="button">Logout</button> -->
-                            Logout
-                        </a>
-                    </li>
+                <form class="navbar-form navbar-right" action="{{ url_for('logout') }}">
+                    <input id="submit" type="submit" value="Logout">
                 </form>
+                    <!-- <p>Hello, {{ session.username }}</p> -->
+                        <!-- <a class="navlink" href="{{ url_for('logout') }}"> -->
+                            <!-- <button class="btn btn-outline-danger" type="button">Logout</button> -->
+                            <!-- Logout -->
+                        <!-- </a> -->
+                    <!-- </li> -->
             {% endif %}
     </div>
 </nav>
