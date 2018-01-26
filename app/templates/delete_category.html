@@ -17,5 +17,6 @@
         {{ form.csrf_token }}
         {{ form.submit }}
     </form>
+    <a href="{{ url_for('category_list', cat_id=category.id) }}">Cancel / Return to {{ category.name }}</a>
 
 {% endblock %}
