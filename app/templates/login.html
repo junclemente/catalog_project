@@ -1,8 +1,53 @@
 {% extends "base.html" %}
 {% block title %}LOGIN{% endblock %}
 
+{% block login %}
+{# Prerequisites for Google Sign In #}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script>
+    gapi.load('auth2', function() {
+        auth2 = gapi.auth2.init({
+            client_id: '950296359546-tr6a0qci8smluvackvmj51bruuu73qos.apps.googleusercontent.com',
+        });
+    })
+</script>
+
+{# End Pre-requisisted for Google Sign In #}
+
+{% endblock %}
+
 {% block content %}
     <h1>Login</h1>
+
+    <div class="row banner menu">
+        <div class="col-md-11 col-md-offset-1 padding-none">
+            <h1>Login with Google</h1>
+        </div>
+    </div>
+    <div id="result"></div>
+    <div>
+        <button class="g-signin2" id="signinButton">Sing in with Google</button>
+
+        <script>
+            $('#signingButton').click(function() {
+                auth2.grantOffineAccess({'redirect_uri': 'postmessage'}).then(signInCallback);
+            });
+        </script>
+    </div>
+
+    <script>
+        function signInCallback(json){
+            console.log('inside callback function');
+            console.log(json);
+            authResult = json;
+            if (authResult['code']){
+                $('#signinButton').attr('style', 'display: none');
+                $('#result').html('One-Time Auth Code:</br>'+ authResult['code'] + '')
+    </script>
+            }
+        }
+
+    <h3>Local Login</h3>
 
     <form action="{{ url_for('login') }}" method="post">
 <!--         Username:<br>
