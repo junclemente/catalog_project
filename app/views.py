@@ -1,6 +1,7 @@
 from app import app
 
 from flask import render_template, flash, redirect, url_for, request
+from flask import session as login_session
 
 from forms import CategoryForm, CategoryEditForm, ConfirmForm
 from forms import ItemForm, ItemEditForm
@@ -41,6 +42,9 @@ def category_list(cat_id):
 def add_category():
     form = CategoryForm()
     categories = session.query(Category).all()
+    if 'username' not in login_session:
+        flash("You must be logged in to add a category.")
+        return redirect(url_for('show_login'))
     if form.validate_on_submit():
         name = form.name.data
         # description = form.description.data
@@ -56,8 +60,12 @@ def add_category():
 @app.route('/delete_category/<int:cat_id>', methods=['GET', 'POST'])
 def delete_category(cat_id):
     form = ConfirmForm()
+    categories = session.query(Category).all()
     category = session.query(Category).filter_by(id=cat_id).first()
     items = session.query(Item).filter_by(category_id=cat_id).all()
+    if 'username' not in login_session:
+        flash("You must be logged in to delete a category.")
+        return redirect(url_for('show_login'))
     if form.validate_on_submit():
         session.delete(category)
         if items:
@@ -67,6 +75,7 @@ def delete_category(cat_id):
         flash("Category deleted.")
         return redirect(url_for('index'))
     return render_template('delete_category.html',
+                           categories=categories,
                            category=category,
                            items=items,
                            form=form)
@@ -77,6 +86,9 @@ def edit_category(cat_id):
     form = CategoryEditForm()
     categories = session.query(Category).all()
     category = session.query(Category).filter_by(id=cat_id).one()
+    if 'username' not in login_session:
+        flash("You must be logged in to edit a category.")
+        return redirect(url_for('show_login'))
     if form.validate_on_submit():
         category.name = form.name.data
         flash('Category has been edited successfully.')
@@ -99,6 +111,9 @@ def add_item(cat_id):
     form = ItemForm()
     categories = session.query(Category).all()
     category = session.query(Category).filter_by(id=cat_id).first()
+    if 'username' not in login_session:
+        flash("You must be logged in to add an item.")
+        return redirect(url_for('show_login'))
     if request.method == 'post':
         flash('POST message')
     if form.validate_on_submit():
@@ -131,6 +146,9 @@ def edit_item(item_id):
     item = session.query(Item).filter_by(id=item_id).one()
     category = session.query(Category).all()
     select_field = [ (c.id, c.name) for c in category]
+    if 'username' not in login_session:
+        flash("You must be logged in to edit an item.")
+        return redirect(url_for('show_login'))
     if request.method == 'POST':
         item.name = form.name.data
         item.description = form.description.data
@@ -152,13 +170,19 @@ def edit_item(item_id):
 @app.route('/delete_item/<int:item_id>', methods=['GET', 'POST'])
 def delete_item(item_id):
     form = ConfirmForm()
+    categories = session.query(Category).all()
     item = session.query(Item).filter_by(id=item_id).first()
+    if 'username' not in login_session:
+        flash("You must be logged in to delete an item.")
+        return redirect(url_for('show_login'))
     if form.validate_on_submit():
             session.delete(item)
             session.commit()
             flash('Item successfully deleted.')
             return redirect(url_for('index'))
-    return render_template('delete_item.html', item=item, form=form)
+    return render_template('delete_item.html',
+                           categories=categories,
+                           item=item, form=form)
 
 
 # def edit_item(item_id):
