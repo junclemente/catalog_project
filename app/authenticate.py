@@ -30,75 +30,6 @@ auth = HTTPBasicAuth()
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 
-# @auth.verify_password
-# def verify_password(username_or_token, password):
-#     user_id = User.verify_auth_token(username_or_token)
-#     if user_id:
-#         user = session.query(User).filter_by(id=user_id).one()
-#     else:
-#         user = session.query(User).filter_by(username=username_or_token).first()
-#         if not user or not user.verify_password(password):
-#             return False
-#     g.user = user
-#     return True
-
-
-
-
-# @app.route('/login/<provider>', methods=['POST'])
-# def oauth_login(provider):
-#     # Parse auth code
-#     auth_code = request.json.get('auth_code')
-#     if provider == 'google':
-#         # Exchange auth_code for token
-#         try:
-#             # Upgrade auth code into credentials object
-#             oauth_flow = flow_from_clientsecrets('client_secrets.json', scope='')
-#             oauth_flow.redirect_uri = 'postmessage'
-#             credentials = oauth_flow.step2_exchange(auth_code)
-#         except FlowExchangeError:
-#             response = make_response(json.dumps('Failed to upgrade the authorization code.'), 401)
-#             response.headers['Content-Type'] = 'application/json'
-#             return response
-
-#         # Check that access token is valid
-#         access_token = credentials.access_token
-#         url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' % access_token)
-#         h = httplib2.Http()
-#         result = json.loads(h.request(url, 'GET')[1])
-#         # Abort if error in access token info
-#         if result.get('error') is not None:
-#             response = make_response(json.dumps(result.get('error')), 500)
-#             response.headers['Content-Type'] = 'application/json'
-
-#         # Get user info
-#         h = httplib2.Http()
-#         userinfo_url = "https://www.googleapis.com/oauth2/v1/userinfo"
-#         params = {'access_token': credentials.access_token, 'alt':'json'}
-#         answer = requests.get(userinfo_url, params=params)
-
-#         data = answer.json()
-
-#         name = data['name']
-#         picture = data['picture']
-#         email = data['email']
-
-#         # Add user to database if does not exist
-#         user = session.query(User).filter_by(email=email).first()
-#         if not user:
-#             user = User(username = name, picture=picture, email=email)
-#             session.add(user)
-#             session.commit()
-
-#         # Create token
-#         token = user.generate_auth_token(600)
-
-#         # Send token back to client
-#         return jsonify({'token': token.decode('ascii')})
-#     else:
-#         return "Unrecognized Provider"
-
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def show_login():
@@ -197,6 +128,20 @@ def gconnect():
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
 
+    # Check if user exists in database
+    print login_session['email']
+    user_id = getUserId(login_session['email'])
+    print user_id
+    if not user_id:
+        print("New User. Creating record in database.")
+        createUser(login_session)
+    else:
+        print("User exists. Welcome back!")
+
+    login_session['user_id'] = user_id
+
+    print login_session['user_id']
+
     output = ''
     output += '<h1>Welcome, '
     output += login_session['username']
@@ -231,11 +176,27 @@ def gdisconnect():
         return redirect(url_for('index'))
 
 
-# @app.route('/token')
-# @auth.login_required
-# def get_auth_token():
-#     token = g.user.generate_auth_token
-#     return jsonify({'token': token.decode('ascii')})
+def createUser(login_session):
+    newUser = User(username=login_session['username'],
+                   email=login_session['email'],
+                   picture=login_session['picture'])
+    session.add(newUser)
+    session.commit()
+    user = session.query(User).filter_by(email=login_session['email']).one()
+    return user.id
+
+
+def getUserInfo(user_id):
+    user = session.query(User).filter_by(id=user_id).one()
+    return user
+
+
+def getUserId(email):
+    try:
+        user = session.query(User).filter_by(email=email).one()
+        return user.id
+    except:
+        return None
 
 
 @app.route('/logout')
