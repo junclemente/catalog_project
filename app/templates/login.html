@@ -1,67 +1,78 @@
-{% extends "base.html" %}
-{% block title %}LOGIN{% endblock %}
+<html>
+<head>
 
-{% block login %}
-{# Prerequisites for Google Sign In #}
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
+  </script>
+
+<script src="https://apis.google.com/js/platform.js?onload=start"> </script>
+<!--meta name="google-signin-client_id" content="13140951618-15nik769cellkubaqnjk5facdib2dh4d.apps.googleusercontent.com"-->
+
+{#
 <script>
     gapi.load('auth2', function() {
-        auth2 = gapi.auth2.init({
-            client_id: '950296359546-tr6a0qci8smluvackvmj51bruuu73qos.apps.googleusercontent.com',
-        });
-    })
+      auth2 = gapi.auth2.init({
+        // client_id: '950296359546-tr6a0qci8smluvackvmj51bruuu73qos.apps.googleusercontent.com',
+        client_id: '549914986858-7fach2tdba8u1cqb0if34ceea88r6a63.apps.googleusercontent.com',
+        // Scopes to request in addition to 'profile' and 'email'
+        //scope: 'additional_scope'
+      });
+    });
+  </script>
+
+#}
+<!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
+</head>
+<body>
+  <h1>FSND Catalog Login</h1>
+  <h2>Login</h2>
+  <!-- Google Sign-In Button -->
+  <div id="signinButtn">
+    <span class="g-signin"
+      data-scope="openid email"
+      data-clientid="549914986858-7fach2tdba8u1cqb0if34ceea88r6a63.apps.googleusercontent.com"
+      data-redirecturi="postmessage"
+      data-accesstype="offline"
+      data-cookiepolicy="single_host_origin"
+      data-callback="signInCallback"
+      data-approvalprompt="force">
+    </span>
+  </div>
+  <div id="result"></div>
+  <a href="{{ url_for('index') }}">Cancel</a>
+
+<script>
+  function signInCallback(authResult){
+    if (authResult['code']) {
+      // Hide the sign-in button once user is authorized
+      $('#signinButton').attr('style', 'display: none');
+
+      // Send one-time-use code to server
+      $.ajax({
+        type: 'POST',
+        url: '/gconnect?state={{STATE}}',
+        processData: false,
+        data: authResult['code'],
+        contentType: 'application/octet-stream; charset=utf-8',
+        success: function(result){
+          // Handle/Verify the server response
+          if (result) {
+            $('#result').html('Login Successful!</br>' + result + '</br>Redirecting...')
+            setTimeout(function() {
+              window.location.href="{{ url_for('index') }}";
+            }, 4000);
+          } else if (authResult['error']) {
+            console.log('There was an error: ' + authResult['error']);
+          } else {
+            $('#result').html('Failed to make a server-side call.Check your configuration and console.');
+          }
+        }
+      });
+    }
+  }
 </script>
 
-{# End Pre-requisisted for Google Sign In #}
 
-{% endblock %}
 
-{% block content %}
-    <h1>Login</h1>
+</body>
 
-    <div class="row banner menu">
-        <div class="col-md-11 col-md-offset-1 padding-none">
-            <h1>Login with Google</h1>
-        </div>
-    </div>
-    <div id="result"></div>
-    <div>
-        <button class="g-signin2" id="signinButton">Sing in with Google</button>
-
-        <script>
-            $('#signingButton').click(function() {
-                auth2.grantOffineAccess({'redirect_uri': 'postmessage'}).then(signInCallback);
-            });
-        </script>
-    </div>
-
-    <script>
-        function signInCallback(json){
-            console.log('inside callback function');
-            console.log(json);
-            authResult = json;
-            if (authResult['code']){
-                $('#signinButton').attr('style', 'display: none');
-                $('#result').html('One-Time Auth Code:</br>'+ authResult['code'] + '')
-    </script>
-            }
-        }
-
-    <h3>Local Login</h3>
-
-    <form action="{{ url_for('login') }}" method="post">
-<!--         Username:<br>
-        <input type="text" name="username"><br>
-        Password:<br>
-        <input type="password" name="password"><br>
-        <input type="submit" value="Login">
- -->
-        {{ form.csrf_token }}
-        {{ form.name.label }}<br>
-        {{ form.name(size=20) }}<br>
-        {{ form.password.label }}<br>
-        {{ form.password(size=20) }}<br>
-        {{ form.submit }}<br>
-    </form>
-
-{% endblock %}
