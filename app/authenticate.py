@@ -170,6 +170,7 @@ def gdisconnect():
         del login_session['username']
         del login_session['email']
         del login_session['picture']
+        del login_session['user_id']
         # response = make_response(json.dumps('Sucessfully disconnected.'), 200)
         # response.headers['Content-Type'] = 'application/json'
         flash("You have been successfully disconnected!")
@@ -203,4 +204,16 @@ def getUserId(email):
 def logout():
     del login_session['username']
     flash("You have successfully been logged out.")
+    return redirect(url_for('index'))
+
+
+@app.route('/forcelogout')
+def forcelogout():
+    del login_session['access_token']
+    del login_session['gplus_id']
+    del login_session['username']
+    del login_session['email']
+    del login_session['picture']
+    del login_session['user_id']
+    flash("Force logout")
     return redirect(url_for('index'))

@@ -8,7 +8,5 @@
 
     <p>
         <a href="{{ url_for('category_list', cat_id=item.category.id) }}">Back to {{ item.category.name }} List</a>
-        | <a href="{{ url_for('edit_item', item_id=item.id) }}">Edit</a>
-        | <a href="{{ url_for('delete_item', item_id=item.id) }}">Delete</a>
     </p>
 {% endblock %}

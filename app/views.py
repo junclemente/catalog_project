@@ -29,13 +29,18 @@ def index():
 def category_list(cat_id):
     categories = session.query(Category).all()
     category = session.query(Category).filter_by(id=cat_id).one()
-    print categories
-    print category
     items = session.query(Item).filter_by(category_id=cat_id).all()
-    return render_template('category_list.html',
+    if ('user_id' in login_session
+        and category.user_id == login_session['user_id']):
+        return render_template('category_list.html',
                            categories=categories,
                            category=category,
                            items=items)
+    else:
+        return render_template('pub_category_list.html',
+                               categories=categories,
+                               category=category,
+                               items=items)
 
 
 @app.route('/add_category', methods=['GET', 'POST'])
@@ -47,7 +52,6 @@ def add_category():
         return redirect(url_for('show_login'))
     if form.validate_on_submit():
         name = form.name.data
-        # description = form.description.data
         new_category = Category(name=name,
                                 user_id=login_session['user_id'])
         session.add(new_category)
@@ -75,11 +79,16 @@ def delete_category(cat_id):
         session.commit()
         flash("Category deleted.")
         return redirect(url_for('index'))
-    return render_template('delete_category.html',
-                           categories=categories,
-                           category=category,
-                           items=items,
-                           form=form)
+    if ('user_id' in login_session and
+        category.user_id == login_session['user_id']):
+        return render_template('delete_category.html',
+                               categories=categories,
+                               category=category,
+                               items=items,
+                               form=form)
+    else:
+        flash("You must be the owner to make changes to this category.")
+        return redirect(url_for('category_list'))
 
 
 @app.route('/edit_category/<int:cat_id>', methods=['GET', 'POST'])
@@ -104,7 +113,11 @@ def edit_category(cat_id):
 def item(item_id):
     categories = session.query(Category).all()
     item = session.query(Item).filter_by(id=item_id).first()
-    return render_template('item.html', categories=categories, item=item)
+    if ('user_id' in login_session
+        and item.user_id == login_session['user_id']):
+        return render_template('item.html', categories=categories, item=item)
+    else:
+        return render_template('pub_item.html', categories=categories, item=item)
 
 
 @app.route('/add_item/<int:cat_id>', methods=['GET', 'POST'])
@@ -171,7 +184,6 @@ def edit_item(item_id):
                            form=form)
 
 
-
 @app.route('/delete_item/<int:item_id>', methods=['GET', 'POST'])
 def delete_item(item_id):
     form = ConfirmForm()
@@ -188,6 +200,3 @@ def delete_item(item_id):
     return render_template('delete_item.html',
                            categories=categories,
                            item=item, form=form)
-
-
-# def edit_item(item_id):
