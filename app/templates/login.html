@@ -2,29 +2,14 @@
 <head>
 
   <!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
-  </script>
-
-<script src="https://apis.google.com/js/platform.js?onload=start"> </script>
-<!--meta name="google-signin-client_id" content="13140951618-15nik769cellkubaqnjk5facdib2dh4d.apps.googleusercontent.com"-->
-
-{#
-<script>
-    gapi.load('auth2', function() {
-      auth2 = gapi.auth2.init({
-        // client_id: '950296359546-tr6a0qci8smluvackvmj51bruuu73qos.apps.googleusercontent.com',
-        client_id: '549914986858-7fach2tdba8u1cqb0if34ceea88r6a63.apps.googleusercontent.com',
-        // Scopes to request in addition to 'profile' and 'email'
-        //scope: 'additional_scope'
-      });
-    });
-  </script>
-
-#}
-<!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <script src="https://apis.google.com/js/platform.js?onload=start"> </script>
+  <!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
 </head>
+
 <body>
   <h1>FSND Catalog Login</h1>
+  {% include "error_flash.html" %}
   <h2>Login</h2>
   <!-- Google Sign-In Button -->
   <div id="signinButtn">
@@ -71,8 +56,5 @@
     }
   }
 </script>
-
-
-
 </body>
 
