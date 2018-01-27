@@ -48,7 +48,8 @@ def add_category():
     if form.validate_on_submit():
         name = form.name.data
         # description = form.description.data
-        new_category = Category(name=name)
+        new_category = Category(name=name,
+                                user_id=login_session['user_id'])
         session.add(new_category)
         session.commit()
         flash('New Category Added')
@@ -119,7 +120,8 @@ def add_item(cat_id):
     if form.validate_on_submit():
         new_item = Item(name=form.name.data,
                         description=form.description.data or "No description",
-                        category_id=category.id)
+                        category_id=category.id,
+                        user_id=login_session['user_id'])
         print new_item
         session.add(new_item)
         session.commit()
@@ -144,6 +146,7 @@ def edit_item(item_id):
     """
     form = ItemEditForm()
     item = session.query(Item).filter_by(id=item_id).one()
+    categories = session.query(Category).all()
     category = session.query(Category).all()
     select_field = [ (c.id, c.name) for c in category]
     if 'username' not in login_session:
@@ -162,7 +165,9 @@ def edit_item(item_id):
         form.process()
         form.name.data = item.name
         form.description.data = item.description
-    return render_template('edit_item.html', category=category,item=item,
+    return render_template('edit_item.html',
+                           categories=categories,
+                           category=category,item=item,
                            form=form)
 
 

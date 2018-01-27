@@ -13,6 +13,12 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 
+@app.route('/api/users')
+def userJSON():
+    users = session.query(User).all()
+    return jsonify(users = [u.serialize for u in users])
+
+
 @app.route('/api/allcategories')
 def categoryJSON():
     categories = session.query(Category).all()

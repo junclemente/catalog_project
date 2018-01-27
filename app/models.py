@@ -28,6 +28,14 @@ class User(Base):
         s = Serializer(secret_key, expires_in=expiration)
         return s.dumps({'id': self.id})
 
+
+    @property
+    def serialize(self):
+        userJSON = {'username': self.username,
+                    'email': self.email,
+                    'id': self.id}
+        return userJSON
+
     @staticmethod
     def verify_auth_token(token):
         s = Serializer(secret_key)
@@ -55,7 +63,7 @@ class Category(Base):
     def serialize(self):
         categoryJSON = {'id': self.id,
                         'name': self.name,
-                        'description': self.description
+                        'user_id': self.user_id
                         }
         return categoryJSON
 
@@ -76,7 +84,8 @@ class Item(Base):
         itemJSON = {'id': self.id,
                     'name': self.name,
                     'description': self.description,
-                    'category_id': self.category_id
+                    'category_id': self.category_id,
+                    'user_id': self.user_id
                     }
         return itemJSON
 
