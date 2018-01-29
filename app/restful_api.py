@@ -12,11 +12,11 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-
-@app.route('/api/users')
-def userJSON():
-    users = session.query(User).all()
-    return jsonify(users = [u.serialize for u in users])
+# For testing only
+# @app.route('/api/users')
+# def userJSON():
+#     users = session.query(User).all()
+#     return jsonify(users = [u.serialize for u in users])
 
 
 @app.route('/api/allcategories')
@@ -39,5 +39,5 @@ def allItemsJSON():
 
 @app.route('/api/item/<int:id>')
 def itemJSON(id):
-    items = session.query(Item).filter_by(category_id=id).all()
-    return jsonify(items = [i.serialize for i in items])
+    items = session.query(Item).filter_by(id=id).first()
+    return jsonify(items.serialize)
