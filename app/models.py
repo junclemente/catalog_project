@@ -16,25 +16,27 @@ class User(Base):
     username = Column(String(32), index=True)
     picture = Column(String)
     email = Column(String)
-    password_hash = Column(String(64))
 
-    def hash_password(self, password):
-        self.password_hash = pwd_context.encrypt(password)
+    # For testing only
+    # password_hash = Column(String(64))
 
-    def verify_password(self, password):
-        return pwd_context.verify(password, self.password_hash)
+    # def hash_password(self, password):
+    #     self.password_hash = pwd_context.encrypt(password)
+
+    # def verify_password(self, password):
+    #     return pwd_context.verify(password, self.password_hash)
 
     def generate_auth_token(self, expiration=600):
         s = Serializer(secret_key, expires_in=expiration)
         return s.dumps({'id': self.id})
 
 
-    @property
-    def serialize(self):
-        userJSON = {'username': self.username,
-                    'email': self.email,
-                    'id': self.id}
-        return userJSON
+    # @property
+    # def serialize(self):
+    #     userJSON = {'username': self.username,
+    #                 'email': self.email,
+    #                 'id': self.id}
+    #     return userJSON
 
     @staticmethod
     def verify_auth_token(token):
@@ -62,8 +64,8 @@ class Category(Base):
     @property
     def serialize(self):
         categoryJSON = {'id': self.id,
-                        'name': self.name,
-                        'user_id': self.user_id
+                        # 'user_id': self.user_id, # for testing only
+                        'name': self.name
                         }
         return categoryJSON
 
@@ -82,10 +84,11 @@ class Item(Base):
     @property
     def serialize(self):
         itemJSON = {'id': self.id,
+                    # 'user_id': self.user_id, # for testing purposes
                     'name': self.name,
                     'description': self.description,
                     'category_id': self.category_id,
-                    'user_id': self.user_id
+                    'category_name': self.category.name
                     }
         return itemJSON
 
