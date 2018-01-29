@@ -19,6 +19,15 @@ This will be updated once complete.
 * Once installed, type `python application.py` to run the app.
 * Open a browser and type: `localhost:8000`
 
+#### JSON Endpoints
+
+There are four JSON endpoints:
+* List all Categories: `/api/allcategories`
+* List all Items: `/api/allitems`
+* List all Items in a Category (requires Category ID number): `/api/itemsincategory/<category_id>`
+* List Item (requires Item ID number): `/api/item/<item_id>`
+
+
 #### Files Needed
 This app uses the Google OAuth2 API to facilitate creating login credentials.
 You will need to create OAuth keys from Google. Once created, download Client ID for Web Application
