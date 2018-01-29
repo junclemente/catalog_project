@@ -18,7 +18,7 @@ import json, random, string
 from flask import make_response
 import requests
 
-# secret_key = "this is a secret key"
+# secret_key = "this is a secret key" # moved to config.py
 
 engine = create_engine('sqlite:///catalogProject.db')
 Base.metadata.bind = engine
