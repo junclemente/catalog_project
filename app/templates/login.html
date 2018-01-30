@@ -1,13 +1,29 @@
-<html>
+<!doctype html>
+
+<html lang="en">
 <head>
+  <meta charset="utf-8">
+  <title>Login - Catalog</title>
+  <meta name="description" content="Fullstack Nanodegree Catalog Project">
+  <meta name="author" content="Jun Clemente">
+
+  <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-con">
+  <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-con">
+
+  {# Custom Fonts | Google #}
+  <link href="https://fonts.googleapis.com/css?family=Dhurjati|Lato" rel="stylesheet">
 
   <!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
   <script src="https://apis.google.com/js/platform.js?onload=start"> </script>
   <!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
 </head>
 
-<body>
+<body class="login">
+  <div class="login-window login-body width80">
   <h1>FSND Catalog Login</h1>
   {% include "error_flash.html" %}
   <h2>Login</h2>
@@ -56,5 +72,6 @@
     }
   }
 </script>
+  </div>
 </body>
 
