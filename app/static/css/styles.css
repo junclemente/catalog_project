@@ -1,4 +1,63 @@
 /* Styles */
 body {
-    padding-top: 60px;
+    background-color: #ff9900;
+    color: #000000;
+    font-family: 'Lato', sans-serif;
+}
+
+a {
+    color: #000000;
+}
+
+a:hover {
+    background-color: #ffffff;
+    text-decoration: none;
+}
+
+h1,
+h2,
+h3 {
+    font-family: 'Dhurjati', sans-serif;
+}
+
+.category-description {
+    color: purple;
+    font-style: italic;
+}
+
+.with-nav {
+    padding-top: 50px;
+}
+
+.bg-danger {
+    color: red;
+    font-weight: bold;
+}
+
+.bg-blue {
+    background-color: #99ccff;
+    height: 100vh;
+}
+
+.width80 {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body.login,
+html.login {
+    margin: 0;
+    padding: 0;
+}
+
+.login-window {
+    background-color: #99ccff;
+    height: 100vh;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.login-body {
+    padding: 30px;
 }
