@@ -53,6 +53,8 @@ def category_list(cat_id):
 def add_category():
     form = CategoryForm()
     categories = session.query(Category).all()
+    # Used to determine if user is logged in. If not, person is redirected
+    # to login page.
     if 'username' not in login_session:
         flash("You must be logged in to add a category.", "flash-warning")
         return redirect(url_for('show_login'))
@@ -77,6 +79,8 @@ def delete_category(cat_id):
     if 'username' not in login_session:
         flash("You must be logged in to delete a category.", "flash-warning")
         return redirect(url_for('show_login'))
+    # Flask-WTF and WTForms is used to manage form creation and to provide
+    # CSRF protection
     if form.validate_on_submit():
         session.delete(category)
         if items:
