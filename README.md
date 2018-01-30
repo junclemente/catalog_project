@@ -30,7 +30,7 @@ There are four JSON endpoints:
 
 #### Files Needed
 This app uses the Google OAuth2 API to facilitate creating login credentials.
-You will need to create OAuth keys from Google. Once created, download Client ID for Web Application
+You will also need to create OAuth keys from Google. Once created, download Client ID for Web Application
 as a JSON file and save it as: `/catalog/client_secrets.json`.
 
 ### Languages / Frameworks / Libraries / APIs
