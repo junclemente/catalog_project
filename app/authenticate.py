@@ -43,13 +43,13 @@ def show_login():
         password = form.password.data
         user = session.query(User).filter_by(username=username).first()
         if not user:
-            flash('Login unsuccessful.')
+            flash('Login unsuccessful.', "flash-warning")
             error = "No username available."
         else:
             if user.verify_password(password):
                 token = user.generate_auth_token(600)
                 login_session['username'] = user.username
-                flash('Login successful.')
+                flash('Login successful.', "flash-success")
                 return redirect(url_for('index'))
             else:
                 flash('Login unsuccessful.')
@@ -149,7 +149,7 @@ def gconnect():
     output += '<img src="'
     output += login_session['picture']
     output += ' " style="width: 300px; height: 300px; border-radius: 150px; -webkit-border-radius: 150px; -moz-border-radius: 150px;">'
-    flash("You are now logged in as %s" % login_session['username'])
+    flash("You are now logged in as %s" % login_session['username'], "flash-success")
     return output
 
 
@@ -173,7 +173,7 @@ def gdisconnect():
         del login_session['user_id']
         # response = make_response(json.dumps('Sucessfully disconnected.'), 200)
         # response.headers['Content-Type'] = 'application/json'
-        flash("You have been successfully disconnected!")
+        flash("You have been successfully disconnected!", "flash-success")
         return redirect(url_for('index'))
 
 
@@ -203,17 +203,18 @@ def getUserId(email):
 @app.route('/logout')
 def logout():
     del login_session['username']
-    flash("You have successfully been logged out.")
+    flash("You have successfully been logged out.", "flash-success")
     return redirect(url_for('index'))
 
 
-@app.route('/forcelogout')
-def forcelogout():
-    del login_session['access_token']
-    del login_session['gplus_id']
-    del login_session['username']
-    del login_session['email']
-    del login_session['picture']
-    del login_session['user_id']
-    flash("Force logout")
-    return redirect(url_for('index'))
+# For testing purposes only
+# @app.route('/forcelogout')
+# def forcelogout():
+#     del login_session['access_token']
+#     del login_session['gplus_id']
+#     del login_session['username']
+#     del login_session['email']
+#     del login_session['picture']
+#     del login_session['user_id']
+#     flash("Force logout")
+#     return redirect(url_for('index'))
