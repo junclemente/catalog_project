@@ -48,7 +48,7 @@ def add_category():
     form = CategoryForm()
     categories = session.query(Category).all()
     if 'username' not in login_session:
-        flash("You must be logged in to add a category.")
+        flash("You must be logged in to add a category.", "bg-danger")
         return redirect(url_for('show_login'))
     if form.validate_on_submit():
         name = form.name.data
@@ -69,7 +69,7 @@ def delete_category(cat_id):
     category = session.query(Category).filter_by(id=cat_id).first()
     items = session.query(Item).filter_by(category_id=cat_id).all()
     if 'username' not in login_session:
-        flash("You must be logged in to delete a category.")
+        flash("You must be logged in to delete a category.", "bg-danger")
         return redirect(url_for('show_login'))
     if form.validate_on_submit():
         session.delete(category)
@@ -97,7 +97,7 @@ def edit_category(cat_id):
     categories = session.query(Category).all()
     category = session.query(Category).filter_by(id=cat_id).one()
     if 'username' not in login_session:
-        flash("You must be logged in to edit a category.")
+        flash("You must be logged in to edit a category.", "bg-danger")
         return redirect(url_for('show_login'))
     if form.validate_on_submit():
         category.name = form.name.data
@@ -126,7 +126,7 @@ def add_item(cat_id):
     categories = session.query(Category).all()
     category = session.query(Category).filter_by(id=cat_id).first()
     if 'username' not in login_session:
-        flash("You must be logged in to add an item.")
+        flash("You must be logged in to add an item.", "bg-danger")
         return redirect(url_for('show_login'))
     if request.method == 'post':
         flash('POST message')
