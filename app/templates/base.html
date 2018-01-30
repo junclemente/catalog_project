@@ -11,6 +11,9 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-con">
     <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-con">
 
+    {# Custom Fonts | Google #}
+    <link href="https://fonts.googleapis.com/css?family=Dhurjati|Lato" rel="stylesheet">
+
     {# Bootstrap CDN Links #}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -18,24 +21,32 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     {# End Bootstrap Links #}
 
+    {% block head %}{% endblock %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
 </head>
 
 <body>
+    <div class="bg-blue container">
     <header>
-        <nav>
-            {% include "navbar.html" %}
-        </nav>
+        <h1>FSND Catalog</h1>
+            {% if 'username' not in session %}
+                <form action="{{ url_for('show_login') }}">
+                    <input id="submit" type="submit" value="Login">
+                </form>
+            {% else %}
+                <form action="{{ url_for('gdisconnect') }}">
+                    <input id="submit" type="submit" value="Logout">
+                </form>
+            {% endif %}
     </header>
     <div class="container">
         <div class="row">
             {% include "error_flash.html" %}
             <div class="row">
                 <div class="col-sm-3">
-                    <h2>Categories</h2>
-                    {% if 'username' in session %}
-                        <a href="{{ url_for('add_category') }}">Add Category</a>
-                    {% endif %}
+                    <h2 class="title">Categories</h2>
+                    <a href="{{ url_for('add_category') }}">Add Category</a>
                     <ul>
                         {% for c in categories %}
                         <li><a href="{{ url_for('category_list', cat_id=c.id) }}">{{ c.name }}</a></li>
@@ -52,5 +63,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 {% include "test.html" %}
+</div>
 </body>
 </html>
