@@ -21,6 +21,7 @@ session = DBSession()
 @app.route('/index')
 def index():
     # Categories is used to populate the categories column on the page.
+    # This is the same for all routes.
     categories = session.query(Category).all()
     items = session.query(Item).order_by(Item.id.desc()).limit(10).all()
     return render_template('index.html', categories=categories, items=items)
@@ -31,6 +32,10 @@ def category_list(cat_id):
     categories = session.query(Category).all()
     category = session.query(Category).filter_by(id=cat_id).one()
     items = session.query(Item).filter_by(category_id=cat_id).all()
+    # Determines if logged-in user is the owner of the entry. If owner is true,
+    # then a page with editing capabilities is provided. Otherwise, a page
+    # without editing capabilities is provided.
+    # This is the same for all routes that require manipulating the database.
     if ('user_id' in login_session
         and category.user_id == login_session['user_id']):
         return render_template('category_list.html',
@@ -150,18 +155,14 @@ def add_item(cat_id):
 
 @app.route('/edit_item/<int:item_id>', methods=['GET', 'POST'])
 def edit_item(item_id):
-    """
-    Edit Item
-    The choices for the dropdown selectfield is dynamically populated by
-    querying the Category table.
-    The default value of the selectfield is also dynamically set.
-    form.process() is run to process the choices and default value
-    The form is provided with the default values after the selectfield has
-    been processed.
-    """
     form = ItemEditForm()
     item = session.query(Item).filter_by(id=item_id).one()
+
+    # The choices for the dropdown selectfield is dynamically populated by
+    # querying the Category table.
     categories = session.query(Category).all()
+
+    # The default value of the selectfield is also dynamically set.
     category = session.query(Category).all()
     select_field = [ (c.id, c.name) for c in category]
     if 'username' not in login_session:
@@ -175,9 +176,16 @@ def edit_item(item_id):
         flash('Item edited successfully.', "flash-success")
         return redirect(url_for('item', item_id=item.id))
     if request.method == 'GET':
+
+        # Dynamically assigned selectfield and default value is assigned
         form.category_id.choices = select_field
         form.category_id.default = item.category_id
+
+        # form.process() is run to process the choices and default value
         form.process()
+
+        # The form is provided with the default values after the selectfied
+        # has been processed.
         form.name.data = item.name
         form.description.data = item.description
     return render_template('edit_item.html',
