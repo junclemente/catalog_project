@@ -30,7 +30,6 @@ class User(Base):
         s = Serializer(secret_key, expires_in=expiration)
         return s.dumps({'id': self.id})
 
-
     # @property
     # def serialize(self):
     #     userJSON = {'username': self.username,
