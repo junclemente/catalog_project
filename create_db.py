@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """
-This file is used to initialize a database for this project.
+This file was used to initialize a database for this project for testing
+purposes only.
 """
 from app import app
 
