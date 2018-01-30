@@ -20,6 +20,7 @@ session = DBSession()
 @app.route('/')
 @app.route('/index')
 def index():
+    # Categories is used to populate the categories column on the page.
     categories = session.query(Category).all()
     items = session.query(Item).order_by(Item.id.desc()).limit(10).all()
     return render_template('index.html', categories=categories, items=items)
@@ -33,9 +34,9 @@ def category_list(cat_id):
     if ('user_id' in login_session
         and category.user_id == login_session['user_id']):
         return render_template('category_list.html',
-                           categories=categories,
-                           category=category,
-                           items=items)
+                               categories=categories,
+                               category=category,
+                               items=items)
     else:
         return render_template('pub_category_list.html',
                                categories=categories,
@@ -48,7 +49,7 @@ def add_category():
     form = CategoryForm()
     categories = session.query(Category).all()
     if 'username' not in login_session:
-        flash("You must be logged in to add a category.", "bg-danger")
+        flash("You must be logged in to add a category.", "flash-warning")
         return redirect(url_for('show_login'))
     if form.validate_on_submit():
         name = form.name.data
@@ -56,7 +57,7 @@ def add_category():
                                 user_id=login_session['user_id'])
         session.add(new_category)
         session.commit()
-        flash('New Category Added')
+        flash('New Category Added', "flash-success")
         return redirect(url_for('category_list', cat_id=new_category.id))
     return render_template('add_category.html', categories=categories,
                            form=form)
@@ -69,7 +70,7 @@ def delete_category(cat_id):
     category = session.query(Category).filter_by(id=cat_id).first()
     items = session.query(Item).filter_by(category_id=cat_id).all()
     if 'username' not in login_session:
-        flash("You must be logged in to delete a category.", "bg-danger")
+        flash("You must be logged in to delete a category.", "flash-warning")
         return redirect(url_for('show_login'))
     if form.validate_on_submit():
         session.delete(category)
@@ -77,7 +78,7 @@ def delete_category(cat_id):
             for item in items:
                 session.delete(item)
         session.commit()
-        flash("Category deleted.")
+        flash("Category deleted successfully.", "flash-success")
         return redirect(url_for('index'))
     if ('user_id' in login_session and
         category.user_id == login_session['user_id']):
@@ -97,11 +98,11 @@ def edit_category(cat_id):
     categories = session.query(Category).all()
     category = session.query(Category).filter_by(id=cat_id).one()
     if 'username' not in login_session:
-        flash("You must be logged in to edit a category.", "bg-danger")
+        flash("You must be logged in to edit a category.", "flash-warning")
         return redirect(url_for('show_login'))
     if form.validate_on_submit():
         category.name = form.name.data
-        flash('Category has been edited successfully.')
+        flash('Category has been edited successfully.', "flash-success")
         return redirect(url_for('category_list', cat_id=category.id))
     if request.method == 'GET':
         form.name.data = category.name
@@ -117,7 +118,8 @@ def item(item_id):
         and item.user_id == login_session['user_id']):
         return render_template('item.html', categories=categories, item=item)
     else:
-        return render_template('pub_item.html', categories=categories, item=item)
+        return render_template('pub_item.html', categories=categories,
+                               item=item)
 
 
 @app.route('/add_item/<int:cat_id>', methods=['GET', 'POST'])
@@ -126,10 +128,10 @@ def add_item(cat_id):
     categories = session.query(Category).all()
     category = session.query(Category).filter_by(id=cat_id).first()
     if 'username' not in login_session:
-        flash("You must be logged in to add an item.", "bg-danger")
+        flash("You must be logged in to add an item.", "flash-warning")
         return redirect(url_for('show_login'))
     if request.method == 'post':
-        flash('POST message')
+        flash('POST message', "flash-warning")
     if form.validate_on_submit():
         new_item = Item(name=form.name.data,
                         description=form.description.data or "No description",
@@ -138,10 +140,10 @@ def add_item(cat_id):
         print new_item
         session.add(new_item)
         session.commit()
-        flash('Item added successfully.')
+        flash('Item added successfully.', "flash-success")
         return redirect(url_for('category_list', cat_id=category.id))
     else:
-        flash("Form input error")
+        flash("Form input error", "flash-warning")
     return render_template('add_item.html', categories=categories,
                            category=category, form=form)
 
@@ -163,14 +165,14 @@ def edit_item(item_id):
     category = session.query(Category).all()
     select_field = [ (c.id, c.name) for c in category]
     if 'username' not in login_session:
-        flash("You must be logged in to edit an item.")
+        flash("You must be logged in to edit an item.", "flash-warning")
         return redirect(url_for('show_login'))
     if request.method == 'POST':
         item.name = form.name.data
         item.description = form.description.data
         item.category_id = form.category_id.data
         session.commit()
-        flash('Item edited successfully.')
+        flash('Item edited successfully.', "flash-success")
         return redirect(url_for('item', item_id=item.id))
     if request.method == 'GET':
         form.category_id.choices = select_field
@@ -190,12 +192,12 @@ def delete_item(item_id):
     categories = session.query(Category).all()
     item = session.query(Item).filter_by(id=item_id).first()
     if 'username' not in login_session:
-        flash("You must be logged in to delete an item.")
+        flash("You must be logged in to delete an item.", "flash-warning")
         return redirect(url_for('show_login'))
     if form.validate_on_submit():
             session.delete(item)
             session.commit()
-            flash('Item successfully deleted.')
+            flash('Item successfully deleted.', "flash-success")
             return redirect(url_for('index'))
     return render_template('delete_item.html',
                            categories=categories,
