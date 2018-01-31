@@ -10,11 +10,27 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Base, Category, Item
 
+from functools import wraps
+
 
 engine = create_engine('sqlite:///catalogProject.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
+
+def login_required(f):
+    '''
+    Decorator function to ensure user is logged in prior to accessing
+    certain pages.
+    '''
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' not in login_session:
+            flash('You must be logged in to access this page.', 'flash-warning')
+            return redirect(url_for('show_login'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 @app.route('/')
@@ -50,14 +66,10 @@ def category_list(cat_id):
 
 
 @app.route('/add_category', methods=['GET', 'POST'])
+@login_required
 def add_category():
     form = CategoryForm()
     categories = session.query(Category).all()
-    # Used to determine if user is logged in. If not, person is redirected
-    # to login page.
-    if 'username' not in login_session:
-        flash("You must be logged in to add a category.", "flash-warning")
-        return redirect(url_for('show_login'))
     if form.validate_on_submit():
         name = form.name.data
         new_category = Category(name=name,
@@ -71,14 +83,12 @@ def add_category():
 
 
 @app.route('/delete_category/<int:cat_id>', methods=['GET', 'POST'])
+@login_required
 def delete_category(cat_id):
     form = ConfirmForm()
     categories = session.query(Category).all()
     category = session.query(Category).filter_by(id=cat_id).first()
     items = session.query(Item).filter_by(category_id=cat_id).all()
-    if 'username' not in login_session:
-        flash("You must be logged in to delete a category.", "flash-warning")
-        return redirect(url_for('show_login'))
     # Flask-WTF and WTForms is used to manage form creation and to provide
     # CSRF protection
     if form.validate_on_submit():
@@ -102,13 +112,11 @@ def delete_category(cat_id):
 
 
 @app.route('/edit_category/<int:cat_id>', methods=['GET', 'POST'])
+@login_required
 def edit_category(cat_id):
     form = CategoryEditForm()
     categories = session.query(Category).all()
     category = session.query(Category).filter_by(id=cat_id).one()
-    if 'username' not in login_session:
-        flash("You must be logged in to edit a category.", "flash-warning")
-        return redirect(url_for('show_login'))
     if form.validate_on_submit():
         category.name = form.name.data
         flash('Category has been edited successfully.', "flash-success")
@@ -132,13 +140,11 @@ def item(item_id):
 
 
 @app.route('/add_item/<int:cat_id>', methods=['GET', 'POST'])
+@login_required
 def add_item(cat_id):
     form = ItemForm()
     categories = session.query(Category).all()
     category = session.query(Category).filter_by(id=cat_id).first()
-    if 'username' not in login_session:
-        flash("You must be logged in to add an item.", "flash-warning")
-        return redirect(url_for('show_login'))
     if request.method == 'post':
         flash('POST message', "flash-warning")
     if form.validate_on_submit():
@@ -158,6 +164,7 @@ def add_item(cat_id):
 
 
 @app.route('/edit_item/<int:item_id>', methods=['GET', 'POST'])
+@login_required
 def edit_item(item_id):
     form = ItemEditForm()
     item = session.query(Item).filter_by(id=item_id).one()
@@ -169,9 +176,6 @@ def edit_item(item_id):
     # The default value of the selectfield is also dynamically set.
     category = session.query(Category).all()
     select_field = [ (c.id, c.name) for c in category]
-    if 'username' not in login_session:
-        flash("You must be logged in to edit an item.", "flash-warning")
-        return redirect(url_for('show_login'))
     if request.method == 'POST':
         item.name = form.name.data
         item.description = form.description.data
@@ -199,13 +203,11 @@ def edit_item(item_id):
 
 
 @app.route('/delete_item/<int:item_id>', methods=['GET', 'POST'])
+@login_required
 def delete_item(item_id):
     form = ConfirmForm()
     categories = session.query(Category).all()
     item = session.query(Item).filter_by(id=item_id).first()
-    if 'username' not in login_session:
-        flash("You must be logged in to delete an item.", "flash-warning")
-        return redirect(url_for('show_login'))
     if form.validate_on_submit():
             session.delete(item)
             session.commit()
@@ -214,3 +216,5 @@ def delete_item(item_id):
     return render_template('delete_item.html',
                            categories=categories,
                            item=item, form=form)
+
+
