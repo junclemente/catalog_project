@@ -134,10 +134,12 @@ def gconnect():
     print user_id
     if not user_id:
         print("New User. Creating record in database.")
+        # Create new user and re-assign user_id.
         user_id = createUser(login_session)
     else:
         print("User exists. Welcome back!")
 
+    # Assign user_id.
     login_session['user_id'] = user_id
 
     print login_session['user_id']
