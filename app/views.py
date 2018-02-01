@@ -102,17 +102,16 @@ def delete_category(cat_id):
         session.commit()
         flash("Category deleted successfully.", "flash-success")
         return redirect(url_for('index'))
-    if ('user_id' in login_session and
-        category.user_id == login_session['user_id']):
+    if (category.user_id != login_session['user_id']):
+        flash("You must be the owner to delete this category.",
+              "flash-warning")
+        return redirect(url_for('category_list', cat_id=category.id))
+    else:
         return render_template('delete_category.html',
                                categories=categories,
                                category=category,
                                items=items,
                                form=form)
-    else:
-        flash("You must be the owner to delete this category.",
-              "flash-warning")
-        return redirect(url_for('category_list', cat_id=category.id))
 
 
 @app.route('/edit_category/<int:cat_id>', methods=['GET', 'POST'])
@@ -152,8 +151,6 @@ def add_item(cat_id):
     form = ItemForm()
     categories = session.query(Category).all()
     category = session.query(Category).filter_by(id=cat_id).first()
-    if request.method == 'post':
-        flash('POST message', "flash-warning")
     if form.validate_on_submit():
         new_item = Item(name=form.name.data,
                         description=form.description.data or "No description",
@@ -164,8 +161,6 @@ def add_item(cat_id):
         session.commit()
         flash('Item added successfully.', "flash-success")
         return redirect(url_for('category_list', cat_id=category.id))
-    else:
-        flash("Form input error", "flash-warning")
     return render_template('add_item.html', categories=categories,
                            category=category, form=form)
 
@@ -220,6 +215,9 @@ def delete_item(item_id):
     form = ConfirmForm()
     categories = session.query(Category).all()
     item = session.query(Item).filter_by(id=item_id).first()
+    if item.user_id != login_session['user_id']:
+        flash("You must be the owner to delete this item.", "flash-warning")
+        return redirect(url_for('item', item_id=item.id))
     if form.validate_on_submit():
             session.delete(item)
             session.commit()
