@@ -30,12 +30,12 @@ class User(Base):
         s = Serializer(secret_key, expires_in=expiration)
         return s.dumps({'id': self.id})
 
-    @property
-    def serialize(self):
-        userJSON = {'username': self.username,
-                    'email': self.email,
-                    'id': self.id}
-        return userJSON
+    # @property
+    # def serialize(self):
+    #     userJSON = {'username': self.username,
+    #                 'email': self.email,
+    #                 'id': self.id}
+    #     return userJSON
 
     @staticmethod
     def verify_auth_token(token):
