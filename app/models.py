@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from sqlalchemy import create_engine
 from passlib.apps import custom_app_context as pwd_context
 from itsdangerous import(TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
@@ -59,6 +59,7 @@ class Category(Base):
     # description = Column(String(300))
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
+    items = relationship("Item", cascade="all, delete-orphan")
 
     @property
     def serialize(self):
@@ -76,7 +77,8 @@ class Item(Base):
     name = Column(String(120), nullable=False) # model name
     description = Column(String(250))
     category_id = Column(Integer, ForeignKey('category.id'), nullable=False)
-    category = relationship(Category)
+    category = relationship(Category,
+                            backref=backref("Category", cascade="all, delete-orphan"))
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
 

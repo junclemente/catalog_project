@@ -89,9 +89,11 @@ def delete_category(cat_id):
         session.delete(category)
         # If there are items in this category, they will be also deleted
         # from the database.
-        if items:
-            for item in items:
-                session.delete(item)
+        # Implemented cascade property in models.py therefore this is no
+        # longer necessary.
+        # if items:
+        #     for item in items:
+        #         session.delete(item)
         session.commit()
         flash("Category deleted successfully.", "flash-success")
         return redirect(url_for('index'))
