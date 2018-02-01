@@ -1,4 +1,22 @@
+<hr>
+The following links are for testing purposes.
+This can be removed in "base.html" file.
+
+<h2>API Endpoints</h2>
 <a href="{{ url_for('categoryJSON') }}">Category</a> |
 <a href="{{ url_for('itemsInCatJSON', cat_id=1) }}">Items in Category</a> |
 <a href="{{ url_for('allItemsJSON') }}">All Items</a> |
 <a href="{{ url_for('itemJSON', id=1) }}">Item</a> |
+<a href="{{ url_for('userJSON') }}">All Users</a>
+
+
+
+<h2>Authenticate/Authorization Test</h2>
+<p>The following links will work for testing when using the email used for TEST_USER_EMAIL_2 in create_db.py</p>
+<a href="{{ url_for('edit_category', cat_id=1) }}">Edit Category, Non-owner</a><br>
+<a href="{{ url_for('edit_category', cat_id=2) }}">Edit Category, Owner</a><br>
+<a href="{{ url_for('edit_item', item_id=1) }}">Edit Item, Non-owner</a><br>
+<a href="{{ url_for('edit_item', item_id=4) }}">Edit Item, Owner</a><br>
+<a href="{{ url_for('delete_item', item_id=1) }}">Delete Item, Non-owner</a><br>
+<a href="{{ url_for('delete_item', item_id=4) }}">Delete Item, Owner</a><br>
+
