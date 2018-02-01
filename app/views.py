@@ -27,7 +27,8 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'username' not in login_session:
-            flash('You must be logged in to access this page.', 'flash-warning')
+            flash('You must be logged in to access this page.',
+                  'flash-warning')
             return redirect(url_for('show_login'))
         return f(*args, **kwargs)
     return decorated_function
@@ -93,6 +94,8 @@ def delete_category(cat_id):
     # CSRF protection
     if form.validate_on_submit():
         session.delete(category)
+        # If there are items in this category, they will be also deleted
+        # from the database.
         if items:
             for item in items:
                 session.delete(item)
@@ -107,8 +110,9 @@ def delete_category(cat_id):
                                items=items,
                                form=form)
     else:
-        flash("You must be the owner to make changes to this category.")
-        return redirect(url_for('category_list'))
+        flash("You must be the owner to delete this category.",
+              "flash-warning")
+        return redirect(url_for('category_list', cat_id=category.id))
 
 
 @app.route('/edit_category/<int:cat_id>', methods=['GET', 'POST'])
@@ -117,6 +121,9 @@ def edit_category(cat_id):
     form = CategoryEditForm()
     categories = session.query(Category).all()
     category = session.query(Category).filter_by(id=cat_id).one()
+    if category.user_id != login_session['user_id']:
+        flash("You must be the owner to edit this category.", "flash-warning")
+        return redirect(url_for('category_list', cat_id=category.id))
     if form.validate_on_submit():
         category.name = form.name.data
         flash('Category has been edited successfully.', "flash-success")
@@ -168,6 +175,11 @@ def add_item(cat_id):
 def edit_item(item_id):
     form = ItemEditForm()
     item = session.query(Item).filter_by(id=item_id).one()
+
+    if item.user_id != login_session['user_id']:
+        flash("You must be the owner to make changes to this item.",
+              "flash-warning")
+        return redirect(url_for('item', item_id=item.id))
 
     # The choices for the dropdown selectfield is dynamically populated by
     # querying the Category table.
