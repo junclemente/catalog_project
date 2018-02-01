@@ -11,7 +11,8 @@ The application shows a list of categories which have items within the categorie
 This app uses the Google OAuth2 API to facilitate creating login credentials.
 You will also need to create OAuth keys from Google. Once created, download Client ID for Web Application
 as a JSON file and save it as: `/catalog/client_secrets.json`.
-** Optional**  Open up the `create_db.py` file and edit the variable `TEST_USER_EMAIL_2` with your gmail address. This step is optional. If this is not done, the database will be populated with items that will not be owned by the user.
+
+**Optional**  Open up the `create_db.py` file and edit the variable `TEST_USER_EMAIL_2` with your gmail address. This step is optional. If this is not done, the database will be populated with items that will not be owned by the user.
 
 * Clone the files onto your harddrive.
 * Ensure that [Vagrant](https://www.vagrantup.com/docs/installation/) is installed.
