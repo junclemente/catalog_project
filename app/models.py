@@ -3,11 +3,14 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import create_engine
 from passlib.apps import custom_app_context as pwd_context
-from itsdangerous import(TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
-import random, string
+from itsdangerous import(TimedJSONWebSignatureSerializer as
+                         Serializer, BadSignature, SignatureExpired)
+import random
+import string
 
 Base = declarative_base()
-secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
+secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits)
+                     for x in xrange(32))
 
 
 class User(Base):
@@ -74,18 +77,19 @@ class Item(Base):
     __tablename__ = 'item'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(120), nullable=False) # model name
+    name = Column(String(120), nullable=False)  # model name
     description = Column(String(250))
     category_id = Column(Integer, ForeignKey('category.id'), nullable=False)
     category = relationship(Category,
-                            backref=backref("Category", cascade="all, delete-orphan"))
+                            backref=backref("Category",
+                                            cascade="all, delete-orphan"))
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
 
     @property
     def serialize(self):
         itemJSON = {'id': self.id,
-                    'user_id': self.user_id, # for testing purposes
+                    'user_id': self.user_id,  # for testing purposes
                     'name': self.name,
                     'description': self.description,
                     'category_id': self.category_id,

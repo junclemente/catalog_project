@@ -46,8 +46,8 @@ def category_list(cat_id):
     # then a page with editing capabilities is provided. Otherwise, a page
     # without editing capabilities is provided.
     # This is the same for all routes that require manipulating the database.
-    if ('user_id' in login_session
-        and category.user_id == login_session['user_id']):
+    if ('user_id' in login_session and
+            category.user_id == login_session['user_id']):
         return render_template('category_list.html',
                                categories=categories,
                                category=category,
@@ -132,8 +132,8 @@ def edit_category(cat_id):
 def item(item_id):
     categories = session.query(Category).all()
     item = session.query(Item).filter_by(id=item_id).first()
-    if ('user_id' in login_session
-        and item.user_id == login_session['user_id']):
+    if ('user_id' in login_session and
+            item.user_id == login_session['user_id']):
         return render_template('item.html', categories=categories, item=item)
     else:
         return render_template('pub_item.html', categories=categories,
@@ -177,7 +177,7 @@ def edit_item(item_id):
 
     # The default value of the selectfield is also dynamically set.
     category = session.query(Category).all()
-    select_field = [ (c.id, c.name) for c in category]
+    select_field = [(c.id, c.name) for c in category]
     if request.method == 'POST':
         item.name = form.name.data
         item.description = form.description.data
@@ -200,7 +200,8 @@ def edit_item(item_id):
         form.description.data = item.description
     return render_template('edit_item.html',
                            categories=categories,
-                           category=category,item=item,
+                           category=category,
+                           item=item,
                            form=form)
 
 
@@ -221,5 +222,3 @@ def delete_item(item_id):
     return render_template('delete_item.html',
                            categories=categories,
                            item=item, form=form)
-
-

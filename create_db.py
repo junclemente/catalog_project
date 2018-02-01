@@ -103,4 +103,3 @@ session.add(item5)
 session.commit()
 
 print "Created categories and items"
-

@@ -6,7 +6,7 @@ from flask import session as login_session
 from forms import LoginForm
 
 from catalog_db import session
-from models import User #, Base
+from models import User
 
 import catalog_db
 
@@ -15,7 +15,9 @@ from flask_httpauth import HTTPBasicAuth
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 import httplib2
-import json, random, string
+import json
+import random
+import string
 from flask import make_response
 import requests
 
@@ -49,6 +51,7 @@ def show_login():
             else:
                 flash('Login unsuccessful.')
     return render_template('login.html', error=error, STATE=state, form=form)
+
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
@@ -144,8 +147,10 @@ def gconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style="width: 300px; height: 300px; border-radius: 150px; -webkit-border-radius: 150px; -moz-border-radius: 150px;">'
-    flash("You are now logged in as %s" % login_session['username'], "flash-success")
+    output += ' " style="width: 300px; height: 300px; border-radius: 150px;'
+    output += ' -webkit-border-radius: 150px; -moz-border-radius: 150px;">'
+    flash("You are now logged in as %s" % login_session['username'],
+          "flash-success")
     return output
 
 
@@ -153,11 +158,10 @@ def gconnect():
 def gdisconnect():
     access_token = login_session.get('access_token')
     if access_token is None:
-        # response = make_response(json.dumps('Current user is not connected.'), 401)
-        # response.headers['Content-Type'] = 'application/json'
         flash("Current user is not connected.")
         return redirect(url_for('index'))
-    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % login_session['access_token']
+    url = ('https://accounts.google.com/o/oauth2/revoke?token=%s' %
+           login_session['access_token'])
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
     if result['status'] == '200':
@@ -167,8 +171,6 @@ def gdisconnect():
         del login_session['email']
         del login_session['picture']
         del login_session['user_id']
-        # response = make_response(json.dumps('Sucessfully disconnected.'), 200)
-        # response.headers['Content-Type'] = 'application/json'
         flash("You have been successfully disconnected!", "flash-success")
         return redirect(url_for('index'))
 
