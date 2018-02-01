@@ -24,27 +24,44 @@ DBSession = sessionmaker(bind=engine)
 # reverted to the last commit by calling: session.rollback()
 session = DBSession()
 
+# For testing, assign an email addres
+TEST_USER_EMAIL = 'kajun.mobile@gmail.com'
 
 # Create 'master' user.
-user1 = User(username="master")
-user1.hash_password("12345")
+user1 = User(username="test account",
+             email="test@test.com")
+# user1.hash_password("12345")
 session.add(user1)
 session.commit()
-print "Created user: 'master', password: '12345'"
+print "Created user: 'test'..."
+
+user2 = User(username=TEST_USER_EMAIL,
+             email=TEST_USER_EMAIL)
+session.add(user2)
+session.commit()
+print "Created user: 'kajun.mobile'..."
 
 
 # Create initial category
 category1 = Category(name="Snowboard",
-                     user_id="1",
-                     description="Snowboarding is a recreational activity...")
+                     user_id="1")
 session.add(category1)
 session.commit()
 
-category2 = Category(name="Skiing",
-                     user_id="1",
-                     description="Skiing is a recreational activity...")
+# category2 = Category(name="Skiing",
+#                      user_id="1")
+# session.add(category2)
+# session.commit()
+
+category2 = Category(name="Foosball",
+                     user_id="2")
 session.add(category2)
 session.commit()
+
+# category4 = Category(name="Football",
+#                      user_id="2")
+# session.add(category4)
+# session.commit()
 
 
 # Create initial item
@@ -68,5 +85,21 @@ item3 = Item(name="Five Hybrid Snowboard Bindings",
              description="Snowboard Bindings")
 session.add(item3)
 session.commit()
-print "Created category and items"
+
+
+item4 = Item(name="Foosball Ball",
+             category_id="2",
+             user_id="2",
+             description="Game ball")
+session.add(item4)
+session.commit()
+
+item5 = Item(name="Foosball Gloves",
+             category_id="2",
+             user_id="2",
+             description="Gloves")
+session.add(item5)
+session.commit()
+
+print "Created categories and items"
 
