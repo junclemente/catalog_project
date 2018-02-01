@@ -6,17 +6,18 @@ from flask import session as login_session
 from forms import CategoryForm, CategoryEditForm, ConfirmForm
 from forms import ItemForm, ItemEditForm
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from models import Base, Category, Item
+from catalog_db import session
+# from sqlalchemy import create_engine
+# from sqlalchemy.orm import sessionmaker
+from models import Category, Item
 
 from functools import wraps
 
 
-engine = create_engine('sqlite:///catalogProject.db')
-Base.metadata.bind = engine
-DBSession = sessionmaker(bind=engine)
-session = DBSession()
+# engine = create_engine('sqlite:///catalogProject.db')
+# Base.metadata.bind = engine
+# DBSession = sessionmaker(bind=engine)
+# session = DBSession()
 
 
 def login_required(f):
