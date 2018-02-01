@@ -6,8 +6,6 @@ from flask import session as login_session
 from forms import LoginForm
 
 from catalog_db import session
-# from sqlalchemy import create_engine
-# from sqlalchemy.orm import sessionmaker
 from models import User #, Base
 
 import catalog_db
@@ -21,12 +19,6 @@ import json, random, string
 from flask import make_response
 import requests
 
-# secret_key = "this is a secret key" # moved to config.py
-
-# engine = create_engine('sqlite:///catalogProject.db')
-# Base.metadata.bind = engine
-# DBSession = sessionmaker(bind=engine)
-# session = DBSession()
 
 auth = HTTPBasicAuth()
 

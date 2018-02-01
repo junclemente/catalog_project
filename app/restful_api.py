@@ -2,15 +2,9 @@ from app import app
 
 from flask import jsonify
 
-# from sqlalchemy import create_engine
-# from sqlalchemy.orm import sessionmaker
-from models import User, Category, Item
 from catalog_db import session
+from models import User, Category, Item
 
-# engine = create_engine('sqlite:///catalogProject.db')
-# Base.metadata.bind = engine
-# DBSession = sessionmaker(bind=engine)
-# session = DBSession()
 
 # For testing only
 @app.route('/api/users')
