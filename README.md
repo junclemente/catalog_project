@@ -24,8 +24,9 @@ as a JSON file and save it as: `/catalog/client_secrets.json`.
 * Once installed, type `python application.py` to run the app.
 * Open a browser and type: `localhost:8000`
 
-** Notes **
-The application will contain links at the bottom that are for test purposes only.
+#### Notes
+The application will contain links at the bottom that are for test purposes only. These can be removed by editing the "base.html" template file and removing the `{% include "test.html" %}` line.
+
 **API Endpoints** are links to the available API endpoints.
 
 **Authenticate / Authorization Test** are for testing editing and deleting information in the database.
@@ -38,7 +39,6 @@ There are four JSON endpoints:
 * List all Items: `/api/allitems`
 * List all Items in a Category (requires Category ID number): `/api/itemsincategory/<category_id>`
 * List Item (requires Item ID number): `/api/item/<item_id>`
-
 
 
 ### Languages / Frameworks / Libraries / APIs
