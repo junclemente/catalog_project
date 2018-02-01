@@ -55,7 +55,6 @@ def show_login():
                 flash('Login unsuccessful.')
     return render_template('login.html', error=error, STATE=state, form=form)
 
-
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
     # Validate state token
