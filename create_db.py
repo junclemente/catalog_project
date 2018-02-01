@@ -26,7 +26,7 @@ session = DBSession()
 
 # For testing, assign an email address
 TEST_USER_EMAIL_1 = 'test@test.com'
-TEST_USER_EMAIL_2 = 'kajun.mobile@gmail.com'
+TEST_USER_EMAIL_2 = 'Edit@ThisEmailAddress.com'
 
 # Create 'master' user.
 user1 = User(username=TEST_USER_EMAIL_1,
