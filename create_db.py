@@ -24,22 +24,23 @@ DBSession = sessionmaker(bind=engine)
 # reverted to the last commit by calling: session.rollback()
 session = DBSession()
 
-# For testing, assign an email addres
-TEST_USER_EMAIL = 'kajun.mobile@gmail.com'
+# For testing, assign an email address
+TEST_USER_EMAIL_1 = 'test@test.com'
+TEST_USER_EMAIL_2 = 'kajun.mobile@gmail.com'
 
 # Create 'master' user.
-user1 = User(username="test account",
-             email="test@test.com")
+user1 = User(username=TEST_USER_EMAIL_1,
+             email=TEST_USER_EMAIL_1)
 # user1.hash_password("12345")
 session.add(user1)
 session.commit()
-print "Created user: 'test'..."
+print "Created user: " + TEST_USER_EMAIL_1
 
-user2 = User(username=TEST_USER_EMAIL,
-             email=TEST_USER_EMAIL)
+user2 = User(username=TEST_USER_EMAIL_2,
+             email=TEST_USER_EMAIL_2)
 session.add(user2)
 session.commit()
-print "Created user: 'kajun.mobile'..."
+print "Created user: " + TEST_USER_EMAIL_2
 
 
 # Create initial category
